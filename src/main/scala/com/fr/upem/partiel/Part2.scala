@@ -1,5 +1,9 @@
 package com.fr.upem.partiel
 
+import java.time.Instant
+
+import com.fr.upem.partiel.model._
+
 // Part2 (10pts)
 /**
   *
@@ -8,7 +12,7 @@ package com.fr.upem.partiel
   * Each transaction can be categorized with categories such as: Salary, Purchase, Withdrawal, Checks (deposits and payments) etc.
   *
   */
-object Part2 {
+object Part2 extends App {
 
   // 2.1 Modelling.
   // Create a model for the user's bank account
@@ -38,6 +42,16 @@ object Part2 {
   // TransactionId(2) -> (Transaction(2, -50, date), Some(Withdrawal))
   // TransactionId(3) -> (Transaction(3, 650, date), Some(CheckDeposit)
 
+  val account = BankAccount(Map[TransactionId, CategorizedTransaction]())
+  val t1 = Transaction(TransactionId(1), -13, "1111111")
+  val t2 = Transaction(TransactionId(2), -50, "1111111")
+  val t3 = Transaction(TransactionId(3), 650, "1111111")
+
+
+  val updatedAccount =
+    account.addTransaction(t1).addTransaction(t2).addTransaction(t3)
+      .categorizeTransaction(TransactionId(2), Withdrawal).categorizeTransaction(TransactionId(3), CheckDeposit)
+
   // 2.4 CSV Export
   // Users want to be able to export their accounts in CSV (Comma-Separated Values) format.
   // A line is structured as follows: Id, Type, Amount, Date
@@ -49,6 +63,9 @@ object Part2 {
   // 2,purchase,-24,1546698590604
   // 3,salary,3500,1546612190770
   // 4,,24,1546612190770
+
+  val export = updatedAccount.show
+  println(export)
 
   // 2.5 CSV Import
   // Users want to be able to import transactions from a CSV.
@@ -69,6 +86,8 @@ object Part2 {
   // - Sum all incomes (salaries, check deposits, uncategorized positive transactions)
   // - List all check (deposit and payment) operations
   // - Compute the account balance
-
+  val income = updatedAccount.computeIncomes
+  val allChecks = updatedAccount.getAllCheckOperations
+  val balance = updatedAccount.computeAccountBalance
 
 }

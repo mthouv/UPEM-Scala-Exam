@@ -50,4 +50,5 @@ class Part1Test extends FlatSpec with Matchers {
     computeTotalEarnings(List[FinancialAsset](carSale, livretA)) should equal(25625)
   }
 
+
 }
